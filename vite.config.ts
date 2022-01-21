@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import reactRefresh from '@vitejs/plugin-react-refresh';
+import react from '@vitejs/plugin-react';
 import path from 'path';
 import vitePluginImp from 'vite-plugin-imp';
 import { getThemeVariables } from 'antd/dist/theme';
@@ -10,19 +10,16 @@ const theme = packageJson.theme || {};
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
-        reactRefresh(),
+        react(),
         vitePluginImp({
             libList: [
                 {
                     libName: 'antd',
-                    style: (name) => `antd/es/${name}/style/css.js`
+                    style: (name) => `antd/es/${name}/style/index.js`
                 }
             ]
         })
     ],
-    esbuild: {
-        jsxInject: `import React from 'react'`
-    },
     resolve: {
         alias: {
             '@': path.resolve(__dirname, '/src')
@@ -45,28 +42,6 @@ export default defineConfig({
                 target: 'http://jsonplaceholder.typicode.com',
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/fallback/, '')
-            }
-        }
-    },
-    build: {
-        terserOptions: {
-            parse: {
-                ecma: 2020
-            },
-            compress: {
-                ecma: 5,
-                comparisons: false,
-                inline: 2
-            },
-            mangle: {
-                safari10: true
-            },
-            keep_classnames: false,
-            keep_fnames: false,
-            output: {
-                ecma: 5,
-                comments: false,
-                ascii_only: true
             }
         }
     },
